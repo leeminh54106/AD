@@ -164,7 +164,7 @@ public class MusicManagement {
                     displayArrSong();
                     break;
                 case 3:
-
+                    updateArrSong(scanner);
                     break;
                 case 4:
 
@@ -199,25 +199,37 @@ public class MusicManagement {
     }
     public static void updateArrSong(Scanner scanner) {
         System.out.println("nhập id cần update:");
-        int songId = Integer.parseInt(scanner.nextLine());
-        int idUpdate = getIndexBySingerId(songId);
-        if (indexSong >= 0) {
+        String songId = scanner.nextLine();
+        boolean check = false;
             for(int i =0; i < indexSong; i++) {
-
+                if(arrSongs[i].getSongId().equals(songId)){
+                    check = true;
+                    arrSongs[i].inputSong(scanner);
+                }
             }
-//            System.out.println("nhập tên update:");
-//            arrSongs[idUpdate].setSongName(scanner.nextLine());
-//
-//            System.out.println("nhập mô tả update");
-//            arrSongs[idUpdate].setDescriptions(scanner.nextLine());
-//
-////            System.out.println("nhập ca sĩ update:");
-////            arrSongs[idUpdate].setSinger();
-//            System.out.println("nhập trạng thái update:");
-//            arrSongs[idUpdate].isSongStatus(Boolean.parseBoolean(scanner.nextLine()));
+            if(check){
+                System.err.println("Khong tim thay id");
+            }
 
+    }
+    public static void deleteArrSong(Scanner scanner) {
+        System.out.println("Nhập ID ca sĩ muốn xóa");
+        String singerId = scanner.nextLine();
+        int indexDelete = getIndexBySingerId(singerId);
+        if (indexDelete >= 0) {
+            boolean inExit = false;
+            for (int i = 0; i < indexSong; i++) {
+                if (arrSongs[i].getSinger().getSingerId() == singerId) {
+                    System.err.println("Không thể xóa được vì tồn tại bài hát");
+                } else {
+                    for (int j = indexDelete; j < indexSinger; j++) {
+                        arrSingers[j] = arrSingers[j + 1];
+                    }
+                    --indexSinger;
+                }
+            }
         } else {
-            System.err.println("danh mục trống");
+            System.err.println("ID không tồn tại");
         }
     }
 }
